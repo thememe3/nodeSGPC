@@ -26,7 +26,48 @@ router.route('/reinicio')
     
 })
 
+router.route('/alumnos')
+.get((req,res) =>{
+    query = `SELECT a.matricula, a.nombres,
+    a.apellidos, a.statusAlumno, u.password FROM
+    Alumno a INNER JOIN Usuario u on a.IdUsuario = u.IdUsuario 
+    WHERE a.statusAlumno=1;`;
+    mysqlConnection.query(query, (err,rows,fields) =>{
+            if(!err){
+                admins=rows;
+                res.json(admins);
+            }else{
+                console.log(err);
+            }
+    });
+}).put((req,res) =>{
+    const {nombres} = req.body;
+    query = `UPDATE Alumno SET statusAlumno=0 WHERE nombres=? ;`;
+    mysqlConnection.query(query, [nombres], (err,rows,fields) =>{
+        if(!err){
+            admins = rows;
+            res.json(alumno);
+        }else{
+            console.log(err);
+        }
+    });
+});
 
+
+router.route('/alumnosRes')
+.put((res,req) =>{
+    const {password, nombreUsuario} = req.body;
+    query = `UPDATE Usuario SET password= ?
+    WHERE nombreUsuario= ?;`;
+    mysqlConnection( query , [password, nombreUsuario] , (err, rows, fields) => {
+        if(!err){
+            admins = rows;
+            res.json(alumno);
+        }else{
+            console.log(err);
+        }
+    });
+});
 
 
 

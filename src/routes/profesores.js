@@ -14,7 +14,36 @@ jsonVacio = (datos, res) =>{
 
 };
 
+router.route('/profesores')
+.get((res,req) =>{
+    query = `SELECT p.nombresProfesor, "
+    "p.apellidosProfesor, p.codigoProfesor, u.password "
+    "FROM Profesor p INNER JOIN Usuario u ON p.IdUsuario=u.IdUsuario;`
+    mysqlConnection.query(query , (err, rows, fields) =>{
+        if(!err){
+            admins = rows;
+            res.json(admins);
+        }else{
+            console.log(err);
+        }
+    });
+});
 
+router.route('/statusProfesor')
+.get((res,req) =>{
+    const {nombresProfesor} = req.body;
+    query = `SELECT statusProfesor FROM Profesor "
+    + "WHERE nombresProfesor= ?;`;
+    mysqlConnection.query(query, [nombresProfesor], (err, rows, fields) =>{
+        if(!err){
+            admins = rows;
+            res.json(admins);
+        }
+        else{
+            console.log(err);
+        }
+    });
+});
 
 router.route('/eje')
 .get((req,res) => {
