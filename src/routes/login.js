@@ -12,7 +12,8 @@ router.route('/')
                     if (rows.length > 0) {
                         req.session.loggedin = true;
                         req.session.nombreUsuario = nombreUsuario;
-                        res.send('verga si funciona');
+                        req.session.tipoUsuario = rows[0].tipoUsuario;
+                        res.redirect('/alumnos/grupo');
                     } else {
                         res.send('Incorrect Username and/or Password!');
                     }			    

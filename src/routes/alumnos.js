@@ -6,8 +6,33 @@ var alumnos=[];
 var query;
 const mysqlConnection = require('../database');
 
+
+
+router.route('/reinicio')
+.put((req, res) =>{
+    if(req.session.tipoUsuario =='admin' && req.session.nombreUsuario){
+        const {password, nombreUsuario} = req.body;
+    query = `UPDATE Usuario SET password= ? WHERE nombreUsuario= ?;`;
+        mysqlConnection.query(query, [nombreUsuario, password], (err, rows, fields) =>{
+            if(!err){
+                alumnos=rows;
+            }else{
+                console.log(err);
+            }
+        });
+    }else{
+        res.send('nada');
+    }
+    
+})
+
+
+
+
+
 router.route('/grupo')
 .get((req,res) => {
+    if(req.session.tipoUsuario =='admin' && req.session.nombreUsuario){
     const {codigoProfesor} = req.body;
     query = `SELECT DISTINCT a.matricula,a.nombres,a.apellidos FROM
     Grupo_Alumno ga INNER JOIN Alumno a INNER JOIN Profesor_Materia pm INNER JOIN
@@ -34,6 +59,10 @@ router.route('/grupo')
             console.log(err);
         }
     });
+}
+else{
+    res.send('no eres perra');
+}
 });
 
 router.route('/fechaG')
