@@ -38,5 +38,5 @@ app.use('/login',loginRoutes);
 
 //start server
 app.listen( app.get('port') , ()=>{
-    console.log('server on port ', app.get('port') );
+    console.log('server on port ', app.get(port) );
 });
